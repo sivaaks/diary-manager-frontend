@@ -7,12 +7,14 @@ import PrivateRoute from './components/PrivateRoute';
 import Events from './components/events/ListEvents';
 import AddEvent from './components/events/AddEvent';
 import ViewEvent from './components/events/ViewEvent';
+import Home from './components/Home';
 
 function App(){
 
   return(
     <BrowserRouter>
       <Switch>
+        <Route exact path='/' component={Home}></Route>
         <Route exact path='/register' component={Register}></Route>
         <Route exact path='/login' component={Login}></Route>
         <Route exact path='/forgot-password' component={ForgotPassword}></Route>

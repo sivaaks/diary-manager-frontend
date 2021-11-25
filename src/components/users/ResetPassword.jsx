@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import {Container,TextField,Link,Button,Stack,Typography} from '@mui/material';
+//import { useState } from 'react';
+//import { useHistory } from 'react-router-dom';
+import {Container,TextField,Button,Stack,Typography} from '@mui/material';
 
 export default function ResetPassword(){
 
-    const history=useHistory();
+    //const history=useHistory();
 
     return (
         <>

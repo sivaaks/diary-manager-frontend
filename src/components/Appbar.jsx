@@ -1,4 +1,4 @@
-import {AppBar,Box,Button,Typography,Toolbar,IconButton,Container,Drawer,List,ListItem,ListItemText,ListItemIcon,ListItemButton,Divider} from '@mui/material';
+import {AppBar,Button,Typography,Toolbar,IconButton,Drawer,List,ListItem,ListItemText,ListItemIcon,ListItemButton,Divider} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Home,Event,DateRange,MeetingRoom,ViewDay,MenuBook,Contacts} from '@mui/icons-material';
 import '../App.css';
@@ -8,8 +8,6 @@ import {useState} from 'react';
 export default function Appbar(){
 
     const history=useHistory();
-    const drawerWidth=240;
-
     const [drawerOpen,setDrawerOpen]=useState(false);
     const eventItems=[
         {

@@ -1,11 +1,10 @@
 import React,{useEffect, useState} from 'react';
 import { Container,Box,Typography,TextField,Stack,FormControl,MenuItem,InputLabel,Select,Alert,Snackbar,LinearProgress } from "@mui/material"
-import { DatePicker,TimePicker,DateTimePicker,LocalizationProvider,LoadingButton } from '@mui/lab';
+import { TimePicker,DateTimePicker,LocalizationProvider,LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import Appbar from "../Appbar";
-import {API_EVENTS,API_CONTACTS, convertTimeTo12H} from '../../Utilities';
+import {API_EVENTS,API_CONTACTS} from '../../Utilities';
 import axios from 'axios';
-import convertTime from 'convert-time';
 import { useHistory } from 'react-router-dom';
 
 export default function AddEvent({props}){
@@ -51,18 +50,18 @@ export default function AddEvent({props}){
 
     const addEvent=async()=>{
         setLoading(true);
-        const data= await axios.post(API_EVENTS,{
+        await axios.post(API_EVENTS,{
             ...eventDetails,status:'Scheduled',
         },{
             headers:{auth:authToken}
         }).then(function(res){
-            if(res.status==200) {
+            if(res.status===200) {
                 setAlert({...alert,show:true,message:`${eventDetails.type} added successfully`,type:'success'});
                 clearInputFields();
             }
         }).catch(function(err){
             console.log(err.response);
-            if(err.response.status==401) {
+            if(err.response.status===401) {
                 setAlert({...alert,show:true,message:'Log in to continue, redirecting',type:'error'})
                 history.push('/login');
             } else{
@@ -76,18 +75,18 @@ export default function AddEvent({props}){
 
     const updateEvent=async()=>{
         setLoading(true);
-        const data= await axios.put(`${API_EVENTS}/${getEventId()}`,{
+        await axios.put(`${API_EVENTS}/${getEventId()}`,{
             ...eventDetails
         },{
             headers:{auth:authToken}
         }).then(function(res){
-            if(res.status==200){
+            if(res.status===200){
                 setAlert({...alert,show:true,message:`${eventDetails.type} updated successfully`,type:'success'});
                 clearInputFields();
             }
         }).catch(function(err){
             console.log(err.response);
-            if(err.response.status==401) {
+            if(err.response.status===401) {
                 setAlert({...alert,show:true,message:'Log in to continue, redirecting',type:'error'})
                 history.push('/login');
             } else{
@@ -99,7 +98,7 @@ export default function AddEvent({props}){
     }
 
     const getEventById=async(id)=>{
-        const data=await axios.get(`${API_EVENTS}/${id}`,{
+        await axios.get(`${API_EVENTS}/${id}`,{
             headers:{auth:authToken}
         }).then(function(res){
             if(res.data) {
@@ -118,7 +117,7 @@ export default function AddEvent({props}){
     const getContacts=async()=>{
         setLoading(true);
         setContacts([{_id:'1231556896',name:'Siva'},{_id:'125454965484',name:'Myself'}])
-        const data=await axios.get(API_CONTACTS,{
+        await axios.get(API_CONTACTS,{
             headers:{auth:authToken}
         }).then(function(res){
             console.log(res);

@@ -1,11 +1,10 @@
 import React,{useEffect,useState} from 'react';
-import { useHistory,Redirect } from 'react-router';
+import { useHistory } from 'react-router';
 import axios from 'axios';
 import Appbar from '../Appbar';
-import {Stack,Typography,Button,TextField,Container,Card,IconButton,Box,LinearProgress,Chip,Snackbar,Alert,Tooltip,Drawer} from '@mui/material';
-import { Delete,Edit,Visibility,Today,AccessTime, ConstructionOutlined } from '@mui/icons-material';
-import {API_EVENTS,convertTimeTo12H,formatDate,formatTime,getChipColor} from '../../Utilities'
-import MenuDrawer from '../Drawer';
+import {Stack,Typography,Button,Container,Card,IconButton,Box,LinearProgress,Chip,Snackbar,Alert,Tooltip} from '@mui/material';
+import { Delete,Edit,Visibility,Today,AccessTime } from '@mui/icons-material';
+import {API_EVENTS,formatDate,formatTime,getChipColor} from '../../Utilities'
 
 export default function Events({props}){
 
@@ -37,7 +36,7 @@ export default function Events({props}){
         const type= findType();
         setEventType(type);
         console.log('type',type);
-        const data= await axios.get(`${API_EVENTS}/type/${type}`,{
+        await axios.get(`${API_EVENTS}/type/${type}`,{
             headers:{auth:authToken},
         }).then(function(res){
             console.log(res.data);
@@ -50,11 +49,11 @@ export default function Events({props}){
 
     const deleteEvent=async(id)=>{
         setLoading(true);
-        const data=await axios.delete(`${API_EVENTS}/${id}`,{
+        await axios.delete(`${API_EVENTS}/${id}`,{
             headers:{auth:authToken}
         }).then(function(res){
             console.log(res);
-            if(res.status==200) getEvents();
+            if(res.status===200) getEvents();
         }).catch(function(err){
             console.log(err);
         })
@@ -65,7 +64,7 @@ export default function Events({props}){
 
     useEffect(()=>{
             getEvents();
-            console.log('Use effect');
+            //console.log('Use effect');
             //if(props.location.state!=undefined) setAlert({...props.location.state});
     },[path])
 

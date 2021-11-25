@@ -1,4 +1,4 @@
-import {useState,useEffect} from 'react';
+import {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {Container,TextField,Typography,Stack,Link,Snackbar,Alert} from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -19,7 +19,7 @@ export default function Register(){
     const registerUser=async()=>{
         
             setLoading(true);
-            const data=await axios.post(API_REGISTER,
+            await axios.post(API_REGISTER,
                 {...userDetails,type:'admin',}).then(function(res){
                 if(res.data) if(res.status===200) {
                     setLoading(false); 

@@ -18,7 +18,7 @@ export default function Login(){
 
     const login=async()=>{
         setLoading(true);
-        const data= await axios.post(API_LOGIN,{
+        await axios.post(API_LOGIN,{
            ...userCredentials,
         }).then(function(res){
             if(res.data) if(res.status===200) {
@@ -38,7 +38,7 @@ export default function Login(){
 
     }
 
-    const showAlert=()=>setAlert({...alert,show:true,type:'error',message:'Alert message'});
+    //const showAlert=()=>setAlert({...alert,show:true,type:'error',message:'Alert message'});
     const closeAlert=()=>setAlert({...alert,show:false});
 
     return(

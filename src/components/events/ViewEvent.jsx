@@ -4,7 +4,8 @@ import Appbar from '../Appbar';
 import { API_EVENTS,convertTimeTo12H } from '../../Utilities';
 import { useEffect, useState } from 'react';
 import { LinearProgress,Box,Container,Card,Typography,Stack,Chip } from '@mui/material';
-import { Delete,Edit,Visibility,Today,AccessTime } from '@mui/icons-material';
+import { Today,AccessTime } from '@mui/icons-material';
+//import { Delete,Edit,Visibility,Today,AccessTime } from '@mui/icons-material';
 
 export default function ViewEvent({props}){
 
@@ -14,16 +15,16 @@ export default function ViewEvent({props}){
     const [loading,setLoading]=useState(true);
     const styles={typography:{display:'flex',flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}
 
-    const getEventDetails=async(id)=>{
-        setLoading(true);
-        const data= await axios.get(`${API_EVENTS}/${id}`,{
-            headers:{auth:authToken}
-        }).then(function(res){
-            console.log(res.data);
-            setEventDetails({...res.data});
-        })
-        setLoading(false);
-    }
+    // const getEventDetails=async(id)=>{
+    //     setLoading(true);
+    //     await axios.get(`${API_EVENTS}/${id}`,{
+    //         headers:{auth:authToken}
+    //     }).then(function(res){
+    //         console.log(res.data);
+    //         setEventDetails({...res.data});
+    //     })
+    //     setLoading(false);
+    // }
 
     const getChipColor=(status)=>{
         switch(status){
@@ -39,8 +40,18 @@ export default function ViewEvent({props}){
     }
 
     useEffect(()=>{
-        getEventDetails(id);
-    },[])
+       async function getEventDetails(){
+            setLoading(true);
+            await axios.get(`${API_EVENTS}/${id}`,{
+                headers:{auth:authToken}
+            }).then(function(res){
+                console.log(res.data);
+                setEventDetails({...res.data});
+            })
+            setLoading(false);
+    }
+    getEventDetails();
+    },[id,authToken])
 
     return(
         <>

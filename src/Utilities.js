@@ -1,9 +1,14 @@
 
-const API_LOGIN='http://localhost:3001/users/login';
-const API_REGISTER='http://localhost:3001/users/register';
-const API_AUTH='http://localhost:3001/users/check-auth';
-const API_EVENTS='http://localhost:3001/events';
-const API_CONTACTS='http://localhost:3001/contacts';
+// const API_LOGIN='http://localhost:3001/users/login';
+// const API_REGISTER='http://localhost:3001/users/register';
+// const API_AUTH='http://localhost:3001/users/check-auth';
+// const API_EVENTS='http://localhost:3001/events';
+// const API_CONTACTS='http://localhost:3001/contacts';
+const API_LOGIN='https://diary-manager-backend.herokuapp.com/users/login';
+const API_REGISTER='https://diary-manager-backend.herokuapp.com/users/register';
+const API_AUTH='https://diary-manager-backend.herokuapp.com/users/check-auth';
+const API_EVENTS='https://diary-manager-backend.herokuapp.com/events';
+const API_CONTACTS='https://diary-manager-backend.herokuapp.com/contacts';
 
 const convertTimeTo12H=(time)=>{
     const tempTime= parseTime(time);

@@ -25,27 +25,27 @@ export default function Events({props}){
     const [alert,setAlert]=useState({show:false,vertical:'top',horizontal:'right',type:'success',message:''});
     const {show,vertical,horizontal,type,message}=alert;
 
-    const findType=()=>{
-        if(path==='/events') return EVENT;
-        if(path==='/meetings') return MEETING;
-        if(path==='/appointments') return APPOINTMENT;
-    }
+    // const findType=()=>{
+    //     if(path==='/events') return EVENT;
+    //     if(path==='/meetings') return MEETING;
+    //     if(path==='/appointments') return APPOINTMENT;
+    // }
 
-    const getEvents=async()=>{
-        setLoading(true);
-        const type= findType();
-        setEventType(type);
-        console.log('type',type);
-        await axios.get(`${API_EVENTS}/type/${type}`,{
-            headers:{auth:authToken},
-        }).then(function(res){
-            console.log(res.data);
-            setEvents(res.data);
-        }).catch(function(err){
-            console.log(err);
-        })
-        setLoading(false);
-    }
+    // const getEvents=async()=>{
+    //     setLoading(true);
+    //     const type= findType();
+    //     setEventType(type);
+    //     console.log('type',type);
+    //     await axios.get(`${API_EVENTS}/type/${type}`,{
+    //         headers:{auth:authToken},
+    //     }).then(function(res){
+    //         console.log(res.data);
+    //         setEvents(res.data);
+    //     }).catch(function(err){
+    //         console.log(err);
+    //     })
+    //     setLoading(false);
+    // }
 
     const deleteEvent=async(id)=>{
         setLoading(true);
@@ -53,7 +53,7 @@ export default function Events({props}){
             headers:{auth:authToken}
         }).then(function(res){
             console.log(res);
-            if(res.status===200) getEvents();
+            if(res.status===200) setEvents(res.data);
         }).catch(function(err){
             console.log(err);
         })
@@ -63,10 +63,32 @@ export default function Events({props}){
     const closeAlert=()=>setAlert({...alert,show:false});
 
     useEffect(()=>{
-            getEvents();
+        async function getEvents(){
+            setLoading(true);
+            const type= findType();
+            setEventType(type);
+            console.log('type',type);
+            await axios.get(`${API_EVENTS}/type/${type}`,{
+                headers:{auth:authToken},
+            }).then(function(res){
+                console.log(res.data);
+                setEvents(res.data);
+            }).catch(function(err){
+                console.log(err);
+            })
+            setLoading(false);
+        }
+        function findType() {
+            if(path==='/events') return EVENT;
+            if(path==='/meetings') return MEETING;
+            if(path==='/appointments') return APPOINTMENT;
+        }
+        getEvents();
+        findType();
+
             //console.log('Use effect');
             //if(props.location.state!=undefined) setAlert({...props.location.state});
-    },[path])
+    },[path,authToken,events])
 
     return(
         <>

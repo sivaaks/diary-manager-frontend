@@ -13,6 +13,7 @@ export default function AddEvent({props}){
     const APPOINTMENT='appointment';
     const EVENT='event';
     const path=props.path;
+    const eventId=props.computedMatch.params.id;
     const history=useHistory();
     const authToken=localStorage.getItem('auth-token');
     const eventDefaults={name:'',description:'',date:new Date(),time:new Date(),priority:'Low',contact:'',status:'',notes:'',type:''}
@@ -25,28 +26,28 @@ export default function AddEvent({props}){
 
     const handleChange=({target:{name,value}})=>setEventDetails({...eventDetails,[name]:value});
 
-    const findType=()=>{
-        if(path==='/events/add') setEventDetails({...eventDetails,type:EVENT});
-        if(path==='/meetings/add') setEventDetails({...eventDetails,type:MEETING});
-        if(path==='/appointments/add') setEventDetails({...eventDetails,type:APPOINTMENT});
-        if(path==='/events/edit/:id') {
-            setRequestType('Edit');
-            setEventDetails({...eventDetails,type:EVENT});
-            getEventById(getEventId());
-        }
-        if(path==='/meetings/edit/:id') {
-            setRequestType('Edit');
-            setEventDetails({...eventDetails,type:MEETING});
-            getEventById(getEventId());
-        }
-        if(path==='/appointments/edit/:id') {
-            setRequestType('Edit');
-            setEventDetails({...eventDetails,type:APPOINTMENT});
-            getEventById(getEventId());
-        }
-    }
+    // const findType=()=>{
+    //     if(path==='/events/add') setEventDetails({...eventDetails,type:EVENT});
+    //     if(path==='/meetings/add') setEventDetails({...eventDetails,type:MEETING});
+    //     if(path==='/appointments/add') setEventDetails({...eventDetails,type:APPOINTMENT});
+    //     if(path==='/events/edit/:id') {
+    //         setRequestType('Edit');
+    //         setEventDetails({...eventDetails,type:EVENT});
+    //         getEventById(getEventId());
+    //     }
+    //     if(path==='/meetings/edit/:id') {
+    //         setRequestType('Edit');
+    //         setEventDetails({...eventDetails,type:MEETING});
+    //         getEventById(getEventId());
+    //     }
+    //     if(path==='/appointments/edit/:id') {
+    //         setRequestType('Edit');
+    //         setEventDetails({...eventDetails,type:APPOINTMENT});
+    //         getEventById(getEventId());
+    //     }
+    // }
 
-    const getEventId=()=>props.computedMatch.params.id;
+    //const getEventId=()=>props.computedMatch.params.id;
 
     const addEvent=async()=>{
         setLoading(true);
@@ -75,7 +76,7 @@ export default function AddEvent({props}){
 
     const updateEvent=async()=>{
         setLoading(true);
-        await axios.put(`${API_EVENTS}/${getEventId()}`,{
+        await axios.put(`${API_EVENTS}/${eventId}`,{
             ...eventDetails
         },{
             headers:{auth:authToken}
@@ -97,35 +98,35 @@ export default function AddEvent({props}){
         setLoading(false);
     }
 
-    const getEventById=async(id)=>{
-        await axios.get(`${API_EVENTS}/${id}`,{
-            headers:{auth:authToken}
-        }).then(function(res){
-            if(res.data) {
-                console.log(res.data);
-                delete res.data._id;
-                delete res.data.userId;
-                delete res.data.createdAt;
-                console.log(res.data);
-                setEventDetails({...res.data});
-            }
-        }).catch(function(err){
-            console.log(err.response);
-        })
-    }
+    // const getEventById=async(id)=>{
+    //     await axios.get(`${API_EVENTS}/${id}`,{
+    //         headers:{auth:authToken}
+    //     }).then(function(res){
+    //         if(res.data) {
+    //             console.log(res.data);
+    //             delete res.data._id;
+    //             delete res.data.userId;
+    //             delete res.data.createdAt;
+    //             console.log(res.data);
+    //             setEventDetails({...res.data});
+    //         }
+    //     }).catch(function(err){
+    //         console.log(err.response);
+    //     })
+    // }
 
-    const getContacts=async()=>{
-        setLoading(true);
-        setContacts([{_id:'1231556896',name:'Siva'},{_id:'125454965484',name:'Myself'}])
-        await axios.get(API_CONTACTS,{
-            headers:{auth:authToken}
-        }).then(function(res){
-            console.log(res);
-        }).catch(function(err){
-            console.log(err);
-        })
-        setLoading(false);     
-    }
+    // const getContacts=async()=>{
+    //     setLoading(true);
+    //     setContacts([{_id:'1231556896',name:'Siva'},{_id:'125454965484',name:'Myself'}])
+    //     await axios.get(API_CONTACTS,{
+    //         headers:{auth:authToken}
+    //     }).then(function(res){
+    //         console.log(res);
+    //     }).catch(function(err){
+    //         console.log(err);
+    //     })
+    //     setLoading(false);     
+    // }
 
     const clearInputFields=()=>{
         setEventDetails({...eventDetails,name:'',description:'',time:new Date(),date:new Date(),priority:'',contact:'',notes:''})
@@ -134,10 +135,59 @@ export default function AddEvent({props}){
     const closeAlert=()=>setAlert({...alert,show:false});
 
     useEffect(()=>{
-        setLoading(true);
+        async function getContacts(){
+            setLoading(true);
+            setContacts([{_id:'1231556896',name:'Siva'},{_id:'125454965484',name:'Myself'}])
+            await axios.get(API_CONTACTS,{
+                headers:{auth:authToken}
+            }).then(function(res){
+                console.log(res);
+            }).catch(function(err){
+                console.log(err);
+            })
+            setLoading(false);
+        }
+
+        function findType(){
+            if(path==='/events/add') setEventDetails({...eventDetails,type:EVENT});
+            if(path==='/meetings/add') setEventDetails({...eventDetails,type:MEETING});
+            if(path==='/appointments/add') setEventDetails({...eventDetails,type:APPOINTMENT});
+            if(path==='/events/edit/:id') {
+                setRequestType('Edit');
+                setEventDetails({...eventDetails,type:EVENT});
+                getEventById(eventId);
+            }
+            if(path==='/meetings/edit/:id') {
+                setRequestType('Edit');
+                setEventDetails({...eventDetails,type:MEETING});
+                getEventById(eventId);
+            }
+            if(path==='/appointments/edit/:id') {
+                setRequestType('Edit');
+                setEventDetails({...eventDetails,type:APPOINTMENT});
+                getEventById(eventId);
+            }
+        }
+
+        async function getEventById(id){
+            await axios.get(`${API_EVENTS}/${id}`,{
+                headers:{auth:authToken}
+            }).then(function(res){
+                if(res.data) {
+                    console.log(res.data);
+                    delete res.data._id;
+                    delete res.data.userId;
+                    delete res.data.createdAt;
+                    console.log(res.data);
+                    setEventDetails({...res.data});
+                }
+            }).catch(function(err){
+                console.log(err.response);
+            })
+        }
         getContacts();
         findType();
-    },[])
+    },[authToken,path,eventDetails,eventId])
 
     return (
         <>

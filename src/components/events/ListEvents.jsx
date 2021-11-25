@@ -88,7 +88,7 @@ export default function Events({props}){
 
             //console.log('Use effect');
             //if(props.location.state!=undefined) setAlert({...props.location.state});
-    },[path,authToken,events])
+    },[path,authToken])
 
     return(
         <>

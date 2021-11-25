@@ -21,6 +21,7 @@ export default function AddEvent({props}){
     const [contacts,setContacts]=useState([]);
     const [loading,setLoading]=useState(true);
     const [requestType,setRequestType]=useState('Add');
+    const [eventType,setEventType]=useState(EVENT);
     const [alert,setAlert]=useState({show:false,vertical:'top',horizontal:'right',type:'success',message:''});
     const {show,vertical,horizontal,type,message}=alert;
 
@@ -52,12 +53,13 @@ export default function AddEvent({props}){
     const addEvent=async()=>{
         setLoading(true);
         await axios.post(API_EVENTS,{
-            ...eventDetails,status:'Scheduled',
+            ...eventDetails,type:eventType,status:'Scheduled',
         },{
             headers:{auth:authToken}
         }).then(function(res){
             if(res.status===200) {
-                setAlert({...alert,show:true,message:`${eventDetails.type} added successfully`,type:'success'});
+                //setAlert({...alert,show:true,message:`${eventDetails.type} added successfully`,type:'success'});
+                setAlert({...alert,show:true,message:`${eventType} added successfully`,type:'success'});
                 clearInputFields();
             }
         }).catch(function(err){
@@ -77,12 +79,13 @@ export default function AddEvent({props}){
     const updateEvent=async()=>{
         setLoading(true);
         await axios.put(`${API_EVENTS}/${eventId}`,{
-            ...eventDetails
+            ...eventDetails,type:eventType,
         },{
             headers:{auth:authToken}
         }).then(function(res){
             if(res.status===200){
-                setAlert({...alert,show:true,message:`${eventDetails.type} updated successfully`,type:'success'});
+                //setAlert({...alert,show:true,message:`${eventDetails.type} updated successfully`,type:'success'});
+                setAlert({...alert,show:true,message:`${eventType} updated successfully`,type:'success'});
                 clearInputFields();
             }
         }).catch(function(err){
@@ -149,22 +152,25 @@ export default function AddEvent({props}){
         }
 
         function findType(){
-            if(path==='/events/add') setEventDetails({...eventDetails,type:EVENT});
-            if(path==='/meetings/add') setEventDetails({...eventDetails,type:MEETING});
-            if(path==='/appointments/add') setEventDetails({...eventDetails,type:APPOINTMENT});
+            if(path==='/events/add') setEventType(EVENT);
+            if(path==='/meetings/add') setEventType(MEETING);
+            if(path==='/appointments/add') setEventType(APPOINTMENT);
             if(path==='/events/edit/:id') {
                 setRequestType('Edit');
-                setEventDetails({...eventDetails,type:EVENT});
+                //setEventDetails({...eventDetails,type:EVENT});
+                setEventType(EVENT);
                 getEventById(eventId);
             }
             if(path==='/meetings/edit/:id') {
                 setRequestType('Edit');
-                setEventDetails({...eventDetails,type:MEETING});
+                //setEventDetails({...eventDetails,type:MEETING});
+                setEventType(MEETING);
                 getEventById(eventId);
             }
             if(path==='/appointments/edit/:id') {
                 setRequestType('Edit');
-                setEventDetails({...eventDetails,type:APPOINTMENT});
+                //setEventDetails({...eventDetails,type:APPOINTMENT});
+                setEventType(APPOINTMENT);
                 getEventById(eventId);
             }
         }
@@ -187,7 +193,7 @@ export default function AddEvent({props}){
         }
         getContacts();
         findType();
-    },[authToken,path,eventDetails,eventId])
+    },[authToken,path,eventId])
 
     return (
         <>
@@ -195,7 +201,8 @@ export default function AddEvent({props}){
         {loading?<LinearProgress color="secondary"/>:<></>}
         <Container sx={{mt:2}}>
             <Box>
-                <Typography variant="h4">{requestType} {eventDetails.type}</Typography>
+                {/* <Typography variant="h4">{requestType} {eventDetails.type}</Typography> */}
+                <Typography variant="h4">{requestType} {eventType}</Typography>
             </Box>
             <Stack direction="column" spacing={2} sx={{mt:2}}>
                 <Stack direction="row" spacing={2}>
@@ -265,8 +272,10 @@ export default function AddEvent({props}){
                     </FormControl>
                 </Stack>
                 <Stack spacing={2}>
-                    {eventDetails.type===MEETING?<TextField onChange={handleChange} value={eventDetails.link} fullWidth variant="outlined" name="link" label="Link"></TextField>:<></>}
-                    {eventDetails.type===APPOINTMENT?<TextField onChange={handleChange} value={eventDetails.location} fullWidth variant="outlined" name="location" label="Location"></TextField>:<></>}
+                    {/* {eventDetails.type===MEETING?<TextField onChange={handleChange} value={eventDetails.link} fullWidth variant="outlined" name="link" label="Link"></TextField>:<></>}
+                    {eventDetails.type===APPOINTMENT?<TextField onChange={handleChange} value={eventDetails.location} fullWidth variant="outlined" name="location" label="Location"></TextField>:<></>} */}
+                    {eventType===MEETING?<TextField onChange={handleChange} value={eventDetails.link} fullWidth variant="outlined" name="link" label="Link"></TextField>:<></>}
+                    {eventType===APPOINTMENT?<TextField onChange={handleChange} value={eventDetails.location} fullWidth variant="outlined" name="location" label="Location"></TextField>:<></>}
                     {requestType==='Edit'?<FormControl fullWidth required>
                         <InputLabel id="event-status-label">Status</InputLabel>
                         <Select
@@ -287,10 +296,13 @@ export default function AddEvent({props}){
                 </Stack>
                 <Stack direction="row" spacing={1} justifyContent="flex-end">
                     {requestType==='Add'
-                    ?<LoadingButton onClick={addEvent} loading={loading} variant="contained" size="large" color="primary">Add {eventDetails.type}</LoadingButton>
-                    :<LoadingButton onClick={updateEvent} loading={loading} variant="contained" size="large">Update {eventDetails.type}</LoadingButton>}
+                    // ?<LoadingButton onClick={addEvent} loading={loading} variant="contained" size="large" color="primary">Add {eventDetails.type}</LoadingButton>
+                    ?<LoadingButton onClick={addEvent} loading={loading} variant="contained" size="large" color="primary">Add {eventType}</LoadingButton>
+                    //:<LoadingButton onClick={updateEvent} loading={loading} variant="contained" size="large">Update {eventDetails.type}</LoadingButton>}
+                    :<LoadingButton onClick={updateEvent} loading={loading} variant="contained" size="large">Update {eventType}</LoadingButton>}
                     <LoadingButton  variant="contained" size="large" color="warning">Clear</LoadingButton>
-                    <LoadingButton onClick={()=>history.push(`/${eventDetails.type}s`)} variant="contained" size="large" color="error">Close</LoadingButton>
+                    {/* <LoadingButton onClick={()=>history.push(`/${eventDetails.type}s`)} variant="contained" size="large" color="error">Close</LoadingButton> */}
+                    <LoadingButton onClick={()=>history.push(`/${eventType}s`)} variant="contained" size="large" color="error">Close</LoadingButton>
                 </Stack>
             </Stack>
         </Container>

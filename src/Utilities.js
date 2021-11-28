@@ -4,11 +4,14 @@
 // const API_AUTH='http://localhost:3001/users/check-auth';
 // const API_EVENTS='http://localhost:3001/events';
 // const API_CONTACTS='http://localhost:3001/contacts';
+//const API_DAY_PLANNER='http://localhost:3001/day-planner';
+
 const API_LOGIN='https://diary-manager-backend.herokuapp.com/users/login';
 const API_REGISTER='https://diary-manager-backend.herokuapp.com/users/register';
 const API_AUTH='https://diary-manager-backend.herokuapp.com/users/check-auth';
 const API_EVENTS='https://diary-manager-backend.herokuapp.com/events';
 const API_CONTACTS='https://diary-manager-backend.herokuapp.com/contacts';
+const API_DAY_PLANNER='https://diary-manager-backend.herokuapp.com/day-planner';
 
 const convertTimeTo12H=(time)=>{
     const tempTime= parseTime(time);
@@ -58,4 +61,4 @@ const getChipColor=(status)=>{
     }
 }
 
-export {API_LOGIN,API_REGISTER,API_AUTH,API_EVENTS,API_CONTACTS,convertTimeTo12H,formatDate,formatTime,getChipColor};
+export {API_LOGIN,API_REGISTER,API_AUTH,API_EVENTS,API_CONTACTS,API_DAY_PLANNER,convertTimeTo12H,formatDate,formatTime,getChipColor};

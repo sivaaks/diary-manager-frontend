@@ -16,7 +16,7 @@ export default function AddEvent({props}){
     const eventId=props.computedMatch.params.id;
     const history=useHistory();
     const authToken=localStorage.getItem('auth-token');
-    const eventDefaults={name:'',description:'',date:new Date(),time:new Date(),priority:'Low',contact:'',status:'',notes:'',type:''}
+    const eventDefaults={name:'',description:'',dateTime:new Date(),priority:'Low',contact:'',status:'',notes:'',type:''}
     const [eventDetails,setEventDetails]=useState(eventDefaults);
     const [contacts,setContacts]=useState([]);
     const [loading,setLoading]=useState(true);
@@ -132,7 +132,7 @@ export default function AddEvent({props}){
     // }
 
     const clearInputFields=()=>{
-        setEventDetails({...eventDetails,name:'',description:'',time:new Date(),date:new Date(),priority:'',contact:'',notes:''})
+        setEventDetails({...eventDetails,name:'',description:'',dateTime:new Date(),priority:'',contact:'',notes:''})
     }
 
     const closeAlert=()=>setAlert({...alert,show:false});
@@ -140,11 +140,11 @@ export default function AddEvent({props}){
     useEffect(()=>{
         async function getContacts(){
             setLoading(true);
-            setContacts([{_id:'1231556896',name:'Siva'},{_id:'125454965484',name:'Myself'}])
+            //setContacts([{_id:'1231556896',name:'Siva'},{_id:'125454965484',name:'Myself'}])
             await axios.get(API_CONTACTS,{
                 headers:{auth:authToken}
             }).then(function(res){
-                console.log(res);
+                setContacts(res.data);
             }).catch(function(err){
                 console.log(err);
             })
@@ -213,27 +213,25 @@ export default function AddEvent({props}){
                     <LocalizationProvider dateAdapter={AdapterDateFns} >
                         <DateTimePicker
                         label="Event date"
-                        value={eventDetails.date}
+                        value={eventDetails.dateTime}
                         inputFormat='dd-MM-yyyy'
                         onChange={(newDate)=>{
                             //const dateSelected=`${newDate.getDate().toString().padStart(2,0)}-${(newDate.getMonth()+1).toString().padStart(2,0)}-${newDate.getFullYear()}`;
-                            setEventDetails({...eventDetails,date:newDate,time:newDate});
+                            setEventDetails({...eventDetails,dateTime:newDate});
                             //setDate(newDate);
                             //setTime(newDate);
-                            console.log('date',newDate)
-                        }}
+                          }}
                         renderInput={(params)=><TextField fullWidth required {...params}/>}
                         ></DateTimePicker>
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDateFns} >
                         <TimePicker
                         label="Event time"
-                        value={eventDetails.time}
+                        value={eventDetails.dateTime}
                         onChange={(newTime)=>{
                             //const timeSelected=parseFloat(`${newTime.getHours()}.${newTime.getMinutes()}`)
-                            setEventDetails({...eventDetails,time:newTime});
+                            setEventDetails({...eventDetails,dateTime:newTime});
                             //setTime(newTime);
-                            console.log('time',newTime);
                         }}
                         renderInput={(params)=><TextField fullWidth required {...params}/>}
                         ></TimePicker>

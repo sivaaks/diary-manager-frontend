@@ -8,6 +8,9 @@ import Events from './components/events/ListEvents';
 import AddEvent from './components/events/AddEvent';
 import ViewEvent from './components/events/ViewEvent';
 import Home from './components/Home';
+import AddContact from './components/contacts/AddContact';
+import Contacts from './components/contacts/ListContacts';
+import DayPlanner from './components/events/DayPlanner';
 
 function App(){
 
@@ -31,7 +34,11 @@ function App(){
         <PrivateRoute exact path='/events/edit/:id' component={AddEvent}></PrivateRoute>
         <PrivateRoute exact path='/meetings/edit/:id' component={AddEvent}></PrivateRoute>
         <PrivateRoute exact path='/appointments/edit/:id' component={AddEvent}></PrivateRoute>
-      </Switch>
+        <PrivateRoute exact path='/contacts' component={Contacts}></PrivateRoute> 
+        <PrivateRoute exact path='/contacts/add' component={AddContact}></PrivateRoute>
+        <PrivateRoute exact path='/contacts/edit/:id' component={AddContact}></PrivateRoute>
+        <PrivateRoute exact path='/day-planner' component={DayPlanner}></PrivateRoute>  
+        </Switch>
     </BrowserRouter>
   )
 }

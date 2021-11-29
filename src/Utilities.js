@@ -1,17 +1,17 @@
 
-// const API_LOGIN='http://localhost:3001/users/login';
-// const API_REGISTER='http://localhost:3001/users/register';
-// const API_AUTH='http://localhost:3001/users/check-auth';
-// const API_EVENTS='http://localhost:3001/events';
-// const API_CONTACTS='http://localhost:3001/contacts';
-//const API_DAY_PLANNER='http://localhost:3001/day-planner';
+const API_LOGIN='http://localhost:3001/users/login';
+const API_REGISTER='http://localhost:3001/users/register';
+const API_AUTH='http://localhost:3001/users/check-auth';
+const API_EVENTS='http://localhost:3001/events';
+const API_CONTACTS='http://localhost:3001/contacts';
+const API_DAY_PLANNER='http://localhost:3001/day-planner';
 
-const API_LOGIN='https://diary-manager-backend.herokuapp.com/users/login';
-const API_REGISTER='https://diary-manager-backend.herokuapp.com/users/register';
-const API_AUTH='https://diary-manager-backend.herokuapp.com/users/check-auth';
-const API_EVENTS='https://diary-manager-backend.herokuapp.com/events';
-const API_CONTACTS='https://diary-manager-backend.herokuapp.com/contacts';
-const API_DAY_PLANNER='https://diary-manager-backend.herokuapp.com/day-planner';
+// const API_LOGIN='https://diary-manager-backend.herokuapp.com/users/login';
+// const API_REGISTER='https://diary-manager-backend.herokuapp.com/users/register';
+// const API_AUTH='https://diary-manager-backend.herokuapp.com/users/check-auth';
+// const API_EVENTS='https://diary-manager-backend.herokuapp.com/events';
+// const API_CONTACTS='https://diary-manager-backend.herokuapp.com/contacts';
+// const API_DAY_PLANNER='https://diary-manager-backend.herokuapp.com/day-planner';
 
 const convertTimeTo12H=(time)=>{
     const tempTime= parseTime(time);
@@ -61,4 +61,32 @@ const getChipColor=(status)=>{
     }
 }
 
-export {API_LOGIN,API_REGISTER,API_AUTH,API_EVENTS,API_CONTACTS,API_DAY_PLANNER,convertTimeTo12H,formatDate,formatTime,getChipColor};
+const getTimeBackgroundColor=(priority)=>{
+    if (priority==='Low') return 'green';
+    if (priority==='Moderate') return 'blue';
+    if (priority==='High') return 'red';
+}
+
+const findTimeDifference=(eventTime)=>{
+
+        let today=new Date();
+        let timeDiff=eventTime-today;
+        const minutes=Math.floor(Math.abs(timeDiff/(1000*60)%60));
+        const hours= Math.floor(Math.abs(timeDiff/(1000*60*60)%24));
+
+        let timeDifference=``;
+        if (timeDiff>0) timeDifference=`Starts in `
+        else timeDifference=`Started `;
+        if (hours>1) timeDifference+=`${hours} hours `;
+        else if (hours===1) timeDifference+=`${hours} hour `;
+        if (minutes===1) timeDifference+=`${minutes} minute `
+        else if(minutes===0 && hours<0) timeDifference+=`Just now` 
+        else timeDifference+=`${minutes} minutes`;
+
+        if (timeDiff<0 && (minutes>0 || hours>0)) timeDifference+=' ago'
+
+        return timeDifference;
+
+}
+
+export {API_LOGIN,API_REGISTER,API_AUTH,API_EVENTS,API_CONTACTS,API_DAY_PLANNER,convertTimeTo12H,formatDate,formatTime,getChipColor,getTimeBackgroundColor,findTimeDifference};

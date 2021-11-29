@@ -6,8 +6,8 @@ import {Stack,Typography,Button,Container,Card,IconButton,Box,LinearProgress,Chi
 import {Visibility } from '@mui/icons-material';
 import {DatePicker,LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import {API_DAY_PLANNER,formatTime,getChipColor,findTimeDifference} from '../../Utilities'
-//import Sample from './Sample';
+import {API_DAY_PLANNER,formatTime,getChipColor} from '../../Utilities'
+import UpdateTime from './UpdateTime';
 
 export default function DayPlanner({props}){
 
@@ -22,10 +22,6 @@ export default function DayPlanner({props}){
     const [date,setDate]=useState(new Date());
     const [alert,setAlert]=useState({show:false,vertical:'top',horizontal:'right',type:'success',message:''});
     const {show,vertical,horizontal,type,message}=alert;
-
-    const eventCards=()=>{
-       
-    }
     
     const closeAlert=()=>setAlert({...alert,show:false});
 
@@ -47,6 +43,10 @@ export default function DayPlanner({props}){
        
         
     },[path,authToken,date])
+
+    useEffect(()=>{
+
+    })
     
     return(
         <>
@@ -89,7 +89,7 @@ export default function DayPlanner({props}){
                                 <Stack direction="row" spacing={2}>
                                     <Tooltip title="Status" placement="top"><Chip label={event.status} color={getChipColor(event.status)}></Chip></Tooltip>
                                     <Tooltip title="Priority" placement="top"><Chip label={event.priority} color={getChipColor(event.priority)}></Chip></Tooltip>
-                                    {/* <Typography variant="h5">{findTimeDifference(new Date(event.dateTime))}</Typography> */}
+                                    <UpdateTime time={event.dateTime}/>
                                 </Stack>
                             </Stack>
                             <Stack direction="row" sx={{height:'auto',marginLeft:'auto',marginRight:'10px'}}>

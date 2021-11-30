@@ -36,8 +36,9 @@ export default function PersonalDiary({props}){
                 }).then(function(res){
                     if(res.status===200) setAlert({...alert,show:true,type:'success',message:'Diary written successfully'});
                 }).catch(function(err){
-                    if(err.response.data.message) setAlert({...alert,show:true,message:err.response.data.message,type:'error'});
-                    else setAlert({...alert,show:true,message:err.response.data,type:'error'});
+                    editDiary();
+                    // if(err.response.data.message) setAlert({...alert,show:true,message:err.response.data.message,type:'error'});
+                    // else setAlert({...alert,show:true,message:err.response.data,type:'error'});
                 })
             } else {
                 editDiary();

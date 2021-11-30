@@ -9,7 +9,7 @@ export default function Home(){
         <>
         <div>
         <h1>Diary manager</h1>
-        <button onCLick={history.push('/login')}>Login</button>
+        <button onClick={history.push('/login')}>Login</button>
         </div>
         </>
     )

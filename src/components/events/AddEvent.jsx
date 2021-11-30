@@ -3,7 +3,7 @@ import { Container,Box,Typography,TextField,Stack,FormControl,MenuItem,InputLabe
 import { TimePicker,DateTimePicker,LocalizationProvider,LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import Appbar from "../Appbar";
-import {API_EVENTS,API_CONTACTS} from '../../Utilities';
+import {API_EVENTS,API_CONTACTS,capitalize} from '../../Utilities';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
@@ -59,7 +59,7 @@ export default function AddEvent({props}){
         }).then(function(res){
             if(res.status===200) {
                 //setAlert({...alert,show:true,message:`${eventDetails.type} added successfully`,type:'success'});
-                setAlert({...alert,show:true,message:`${eventType} added successfully`,type:'success'});
+                setAlert({...alert,show:true,message:`${capitalize(eventType)} added successfully`,type:'success'});
                 clearInputFields();
             }
         }).catch(function(err){
@@ -85,7 +85,7 @@ export default function AddEvent({props}){
         }).then(function(res){
             if(res.status===200){
                 //setAlert({...alert,show:true,message:`${eventDetails.type} updated successfully`,type:'success'});
-                setAlert({...alert,show:true,message:`${eventType} updated successfully`,type:'success'});
+                setAlert({...alert,show:true,message:`${capitalize(eventType)} updated successfully`,type:'success'});
                 clearInputFields();
             }
         }).catch(function(err){

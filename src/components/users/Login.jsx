@@ -25,7 +25,7 @@ export default function Login(){
                 setAlert({...alert,show:true,type:'success',message:'Login successfull,redirecting...'})
                 localStorage.setItem('auth-token',res.data.authToken);
                 setLoading(false);
-                history.push('/events');
+                history.push('/dashboard');
             }
         }).catch(function(err){
                 setLoading(false);

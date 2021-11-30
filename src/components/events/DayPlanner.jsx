@@ -6,7 +6,7 @@ import {Stack,Typography,Button,Container,Card,IconButton,Box,LinearProgress,Chi
 import {Visibility } from '@mui/icons-material';
 import {DatePicker,LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import {API_DAY_PLANNER,formatTime,getChipColor} from '../../Utilities'
+import {API_DAY_PLANNER,formatTime,getChipColor,capitalize} from '../../Utilities'
 import UpdateTime from './UpdateTime';
 
 export default function DayPlanner({props}){
@@ -55,6 +55,7 @@ export default function DayPlanner({props}){
         {loading?<LinearProgress color="secondary"/>:<></>}
         </Stack>
         <Container>
+        <Typography variant="h4" sx={{mt:2}}>Day planner</Typography>
         <Box sx={{mt:2,width:'100%'}}>
         <Stack direction="row" spacing={1} justifyContent="flex-end">
 
@@ -71,7 +72,7 @@ export default function DayPlanner({props}){
                 renderInput={(params)=><TextField fullWidth required {...params}/>}
                 ></DatePicker>
         </LocalizationProvider>
-            <Button variant="contained" color="primary" size="large" >Filter</Button>
+            <Button variant="contained" color="primary" size="large" onClick={()=>setDate(new Date(date))}>Refresh</Button>
         </Stack>
         {(events.length>0)? events.map((event,index)=>{
                 return(
@@ -82,7 +83,7 @@ export default function DayPlanner({props}){
                                 <Typography variant="h4" sx={styles.typography}>{formatTime(event.dateTime)}</Typography>
                             </Stack>
                             <Stack sx={{minHeight:'100px',width:'180px',backgroundColor:'green',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-                                <Typography variant="h5" sx={styles.typography}>{event.type}</Typography>
+                                <Typography variant="h5" sx={styles.typography}>{capitalize(event.type)}</Typography>
                             </Stack>
                             <Stack direction="column" spacing={1} sx={{ml:1}}>
                                 <Typography variant="h4" sx={{fontSize:'32px',fontWeight:'semi-bold'}}>{event.name}</Typography>

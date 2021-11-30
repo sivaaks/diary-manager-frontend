@@ -4,13 +4,11 @@ import axios from 'axios';
 import Appbar from '../Appbar';
 import {Stack,Typography,Button,Container,Card,IconButton,Box,LinearProgress,Chip,Snackbar,Alert,Tooltip,Dialog,DialogTitle,DialogContent, DialogContentText, DialogActions} from '@mui/material';
 import { Delete,Edit,Visibility,Today,AccessTime } from '@mui/icons-material';
-import {API_EVENTS,formatDate,formatTime,getChipColor} from '../../Utilities'
+import {API_EVENTS,formatDate,formatTime,getChipColor,capitalize} from '../../Utilities'
 import { LoadingButton } from '@mui/lab';
 
 export default function Events({props}){
 
-    //console.log(props.location.state);
-    //console.log('props',props.path);
     const MEETING='meeting';
     const APPOINTMENT='appointment';
     const EVENT='event';
@@ -92,6 +90,7 @@ export default function Events({props}){
 
         </Stack>    
         <Stack direction="row" spacing={1} justifyContent="flex-end">
+        <Typography variant="h4" sx={{marginRight:'auto'}}>{capitalize(eventType)}s</Typography>
             <Button variant="contained" color="primary" size="large" onClick={()=>history.push(`/${eventType}s/add`)}>Add {eventType}</Button>
         </Stack>
            {(events.length>0)? events.map((event,index)=>{

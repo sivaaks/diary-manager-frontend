@@ -1,6 +1,6 @@
 import {AppBar,Button,Typography,Toolbar,IconButton,Drawer,List,ListItem,ListItemText,ListItemIcon,ListItemButton,Divider} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import {Home,Event,DateRange,MeetingRoom,ViewDay,MenuBook,Contacts} from '@mui/icons-material';
+import {Home,Event,DateRange,MeetingRoom,ViewDay,MenuBook,Contacts,CalendarViewMonth} from '@mui/icons-material';
 import '../App.css';
 import {useHistory} from 'react-router-dom';
 import {useState} from 'react';
@@ -18,6 +18,8 @@ export default function Appbar(){
             item:'Meetings',icon:<MeetingRoom/>,link:'/meetings',
         },{
             item:'Day planner',icon:<ViewDay/>,link:'/day-planner',
+        },{
+            item:'Calendar view',icon:<CalendarViewMonth/>,link:'/calendar-view',
         }
     ];
 
@@ -38,9 +40,9 @@ export default function Appbar(){
        return(
         <>
         <List>
-            <ListItem button onClick={()=>history.push('/home')}>
+            <ListItem button onClick={()=>history.push('/dashboard')}>
                 <ListItemIcon><Home/></ListItemIcon>
-                <ListItemText primary="Home"/>
+                <ListItemText primary="Dashboard"/>
             </ListItem>
         </List>
         <Divider/>

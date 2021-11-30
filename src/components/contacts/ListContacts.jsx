@@ -62,6 +62,7 @@ export default function Contacts(){
 
         </Stack>    
         <Stack direction="row" spacing={1} justifyContent="flex-end">
+            <Typography variant="h4" sx={{marginRight:'auto'}}>Contacts</Typography>
             <Button variant="contained" color="primary" size="large" onClick={()=>history.push(`/contacts/add`)}>Add contact</Button>
         </Stack>
            {(contacts.length>0)? contacts.map((contact,index)=>{

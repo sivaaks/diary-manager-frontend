@@ -5,6 +5,8 @@
 // const API_EVENTS='http://localhost:3001/events';
 // const API_CONTACTS='http://localhost:3001/contacts';
 // const API_DAY_PLANNER='http://localhost:3001/day-planner';
+// const API_PERSONAL_DIARY='http://localhost:3001/personal-diary';
+// const API_INFO='http://localhost:3001/info';
 
 const API_LOGIN='https://diary-manager-backend.herokuapp.com/users/login';
 const API_REGISTER='https://diary-manager-backend.herokuapp.com/users/register';
@@ -12,6 +14,8 @@ const API_AUTH='https://diary-manager-backend.herokuapp.com/users/check-auth';
 const API_EVENTS='https://diary-manager-backend.herokuapp.com/events';
 const API_CONTACTS='https://diary-manager-backend.herokuapp.com/contacts';
 const API_DAY_PLANNER='https://diary-manager-backend.herokuapp.com/day-planner';
+const API_PERSONAL_DIARY='https://diary-manager-backend.herokuapp.com/personal-diary';
+const API_INFO='https://diary-manager-backend.herokuapp.com/info';
 
 const convertTimeTo12H=(time)=>{
     const tempTime= parseTime(time);
@@ -42,10 +46,17 @@ const formatDate=(date)=>{
     return `${tempDate.getDate().toString().padStart(2,'0')}-${(tempDate.getMonth()+1).toString().padStart(2,'0')}-${tempDate.getFullYear()} (${days[tempDate.getDay()]})`;
 }
 
+const dateOnly=(date)=>{
+    const getDateOnly= new Date(date);
+    return `${getDateOnly.getDate()}-${getDateOnly.getMonth()+1}-${getDateOnly.getFullYear()}`;
+}
+
 const formatTime=(time)=>{
     const tempTime=new Date(time);
     return convertTimeTo12H(`${tempTime.getHours()}.${tempTime.getMinutes().toString().padStart(2,'0')}`);
 }
+
+const capitalize=(input)=>input.charAt(0).toUpperCase()+input.slice(1);
 
 const getChipColor=(status)=>{
     switch(status){
@@ -89,4 +100,4 @@ const findTimeDifference=(eventTime,currentTime)=>{
 
 }
 
-export {API_LOGIN,API_REGISTER,API_AUTH,API_EVENTS,API_CONTACTS,API_DAY_PLANNER,convertTimeTo12H,formatDate,formatTime,getChipColor,getTimeBackgroundColor,findTimeDifference};
+export {API_LOGIN,API_REGISTER,API_AUTH,API_EVENTS,API_CONTACTS,API_DAY_PLANNER,API_PERSONAL_DIARY,API_INFO,convertTimeTo12H,formatDate,formatTime,getChipColor,getTimeBackgroundColor,findTimeDifference,dateOnly,capitalize};

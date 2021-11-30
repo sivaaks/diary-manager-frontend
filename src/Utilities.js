@@ -5,8 +5,8 @@
 // const API_EVENTS='http://localhost:3001/events';
 // const API_CONTACTS='http://localhost:3001/contacts';
 // const API_DAY_PLANNER='http://localhost:3001/day-planner';
-// const API_PERSONAL_DIARY='http://localhost:3001/personal-diary';
-// const API_INFO='http://localhost:3001/info';
+//const API_PERSONAL_DIARY='http://localhost:3001/personal-diary';
+//const API_INFO='http://localhost:3001/info';
 
 const API_LOGIN='https://diary-manager-backend.herokuapp.com/users/login';
 const API_REGISTER='https://diary-manager-backend.herokuapp.com/users/register';

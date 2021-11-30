@@ -28,7 +28,8 @@ export default function PersonalDiary({props}){
 
     const writeDiary=async()=>{
         
-        if (dateOnly(date)===dateOnly(new Date()) && diaryId.length<0){
+        setLoading(true);
+        //if (diaryId.length<0){
             await axios.post(API_PERSONAL_DIARY,{
                 date:dateOnly(date),content:diaryContent,
             },{
@@ -36,16 +37,20 @@ export default function PersonalDiary({props}){
                 }).then(function(res){
                     if(res.status===200) setAlert({...alert,show:true,type:'success',message:'Diary written successfully'});
                 }).catch(function(err){
-                    editDiary();
+                   // editDiary();
+                   setDate(new Date());
                     // if(err.response.data.message) setAlert({...alert,show:true,message:err.response.data.message,type:'error'});
                     // else setAlert({...alert,show:true,message:err.response.data,type:'error'});
+                    editDiary();
                 })
-            } else {
-                editDiary();
-            }
+           // } else {
+               // editDiary();
+           // }
+            setLoading(false);
     }
 
     const editDiary=async()=>{
+        setLoading(true);
         await axios.put(`${API_PERSONAL_DIARY}/${diaryId}`,{
             date:dateOnly(date),content:diaryContent,
         },{
@@ -56,6 +61,8 @@ export default function PersonalDiary({props}){
                 if(err.response.data.message) setAlert({...alert,show:true,message:err.response.data.message,type:'error'});
                 else setAlert({...alert,show:true,message:err.response.data,type:'error'});
             })
+            setDate(new Date());
+            setLoading(false);
     }
 
     useEffect(()=>{

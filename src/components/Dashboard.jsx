@@ -23,6 +23,12 @@ export default function Dasboard(){
     useEffect(()=>{
 
         async function getInfo(){
+        // let defaultInfo=[
+        //     {_id:'appointment',count:0,color:'green'},
+        //     {_id:'event',count:0,color:'red'},
+        //     {_id:'meeting',count:0,color:'violet'},
+        //     {_id:'contact',count:0,color:'crimson'},
+        // ]
         setLoading(true);
        // setTimeout(async()=>{
         await axios.get(API_INFO,{

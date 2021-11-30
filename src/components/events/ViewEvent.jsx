@@ -1,10 +1,11 @@
 
 import axios from 'axios';
 import Appbar from '../Appbar';
-import { API_EVENTS,convertTimeTo12H } from '../../Utilities';
+import { API_EVENTS,formatDate,formatTime,formatDuration } from '../../Utilities';
 import { useEffect, useState } from 'react';
 import { LinearProgress,Box,Container,Card,Typography,Stack,Chip } from '@mui/material';
 import { Today,AccessTime } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 //import { Delete,Edit,Visibility,Today,AccessTime } from '@mui/icons-material';
 
 export default function ViewEvent({props}){
@@ -25,6 +26,16 @@ export default function ViewEvent({props}){
     //     })
     //     setLoading(false);
     // }
+
+    const cancelEvent=async()=>{
+        setLoading(true);
+        await axios.patch(`${API_EVENTS}/status?id=${eventDetails._id}&status='Cancelled`,{
+            headers:{auth:authToken}
+        }).then(function(res){
+            console.log(res);
+        })
+        setLoading(false);
+    }
 
     const getChipColor=(status)=>{
         switch(status){
@@ -59,14 +70,21 @@ export default function ViewEvent({props}){
         {loading?<LinearProgress color="secondary"/>:<></>}
         <Container sx={{mt:2}}>
             <Box sx={{backgroundColor:'silver',display:'flex',flexDirection:'column',justifyContent:'center'}}>
-                <Card sx={{height:'200px',padding:'10px',backgroundColor:'#eee'}}>
+                <Card sx={{height:'300px',padding:'10px',backgroundColor:'#eee'}}>
                     <Typography variant="h4">{eventDetails.name}</Typography>
                     <Stack direction="row" spacing={2}>
-                        <Typography sx={styles.typography}><Today sx={{pr:1}}/>{eventDetails.date}</Typography>
-                        <Typography sx={styles.typography}><AccessTime sx={{pr:1}}/>{convertTimeTo12H(eventDetails.time)}</Typography>
+                        <Typography sx={styles.typography}><Today sx={{pr:1}}/>{formatDate(eventDetails.dateTime)}</Typography>
+                        <Typography sx={styles.typography}><AccessTime sx={{pr:1}}/>{formatTime(eventDetails.dateTime)}</Typography>
                         <Chip label={eventDetails.status} color={getChipColor(eventDetails.status)}></Chip>
                         <Chip label={`Priority : ${eventDetails.priority}`} sx={{backgroundColor:getChipColor(eventDetails.priority),color:'white'}}></Chip>
                     </Stack>
+                    <Stack sx={{mt:2}}>
+                        <Typography variant="h5" sx={styles.typography}>Description: {eventDetails.description}</Typography>
+                        <Typography variant="h5" sx={styles.typography}>Notes: {eventDetails.notes}</Typography>
+                        <Typography variant="h5" sx={styles.typography}>Duration: {formatDuration(eventDetails.duration)}</Typography>
+                        <Typography variant="p" sx={styles.typography}>Created at: {eventDetails.createdAt}</Typography>
+                    </Stack>
+                    <LoadingButton variant="contained" loading={loading} onClick={()=>cancelEvent}>Cancel</LoadingButton>
                 </Card>
             </Box>
         </Container>

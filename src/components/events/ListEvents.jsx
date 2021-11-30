@@ -4,7 +4,7 @@ import axios from 'axios';
 import Appbar from '../Appbar';
 import {Stack,Typography,Button,Container,Card,IconButton,Box,LinearProgress,Chip,Snackbar,Alert,Tooltip,Dialog,DialogTitle,DialogContent, DialogContentText, DialogActions} from '@mui/material';
 import { Delete,Edit,Visibility,Today,AccessTime } from '@mui/icons-material';
-import {API_EVENTS,formatDate,formatTime,getChipColor,capitalize} from '../../Utilities'
+import {API_EVENTS,formatDate,formatTime,getChipColor,capitalize,formatDuration} from '../../Utilities'
 import { LoadingButton } from '@mui/lab';
 
 export default function Events({props}){
@@ -104,6 +104,7 @@ export default function Events({props}){
                                     <Typography sx={styles.typography}><AccessTime sx={{pr:1}}/>{formatTime(event.dateTime)}</Typography>
                                     <Tooltip title="Status" placement="top"><Chip label={event.status} color={getChipColor(event.status)}></Chip></Tooltip>
                                     <Tooltip title="Priority" placement="top"><Chip label={event.priority} color={getChipColor(event.priority)}></Chip></Tooltip>
+                                    <Typography sx={styles.typography}>Duration: {formatDuration(event.duration)}</Typography>
                                 </Stack>
                             </Stack>
                             <Stack direction="row" sx={{height:'auto'}}>

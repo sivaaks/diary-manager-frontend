@@ -45,6 +45,7 @@ export default function Login(){
         <>
         <Container maxWidth="sm">
             <Stack spacing={2} sx={{mt:3}} direction="column" alignItems="center">
+                <Typography variant="h2" sx={{mt:5}}>Diary manager</Typography>
                 <Typography variant="h4" sx={{mt:5}}>Login</Typography>
                 <TextField fullWidth value={userCredentials.email} onChange={handleChange} type="email" variant="outlined" name="email" label="Email address" required></TextField>
                 <TextField fullWidth value={userCredentials.password} onChange={handleChange} type="password" variant="outlined" name="password" label="Password" required></TextField>
@@ -54,7 +55,13 @@ export default function Login(){
                 <Link onClick={()=>history.push('/register')} variant="body2" sx={{cursor:'pointer'}}>Don't have an account? Register here</Link>
                 <Link onClick={()=>history.push('/forgot-password')} variant="body2" sx={{cursor:'pointer'}}>Forgot password</Link>
             </Stack>
+            <Stack sx={{mt:2}}>
+                <Typography variant="h6">Demo credentials</Typography>
+                <Typography variant="h6">Email: demo@example.com</Typography>
+                <Typography variant="h6">Password: demo123</Typography>
+            </Stack>
         </Container>
+
         <Snackbar open={show} autoHideDuration={6000} onClose={closeAlert} anchorOrigin={{vertical,horizontal}}>
             <Alert severity={type} variant="filled" sx={{width:'100%',pr:30}}>
                 {message}

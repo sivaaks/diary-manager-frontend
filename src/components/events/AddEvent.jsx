@@ -16,7 +16,7 @@ export default function AddEvent({props}){
     const eventId=props.computedMatch.params.id;
     const history=useHistory();
     const authToken=localStorage.getItem('auth-token');
-    const eventDefaults={name:'',description:'',dateTime:new Date(),priority:'Low',contact:'',status:'',notes:'',type:''}
+    const eventDefaults={name:'',description:'',dateTime:new Date(),duration:new Date('0000-00-00T00:00'),priority:'Low',contact:'',status:'',notes:'',type:''}
     const [eventDetails,setEventDetails]=useState(eventDefaults);
     const [contacts,setContacts]=useState([]);
     const [loading,setLoading]=useState(true);
@@ -232,6 +232,20 @@ export default function AddEvent({props}){
                             //const timeSelected=parseFloat(`${newTime.getHours()}.${newTime.getMinutes()}`)
                             setEventDetails({...eventDetails,dateTime:newTime});
                             //setTime(newTime);
+                        }}
+                        renderInput={(params)=><TextField fullWidth required {...params}/>}
+                        ></TimePicker>
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDateFns} >
+                        <TimePicker
+                        ampm={false}
+                        label="Duration"
+                        views={['hours','minutes']}
+                        inputFormat="HH:mm"
+                        mask="__:__"
+                        value={eventDetails.duration}
+                        onChange={(newDuration)=>{
+                            setEventDetails({...eventDetails,duration:newDuration});
                         }}
                         renderInput={(params)=><TextField fullWidth required {...params}/>}
                         ></TimePicker>

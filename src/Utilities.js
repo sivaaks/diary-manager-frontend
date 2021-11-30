@@ -56,6 +56,12 @@ const formatTime=(time)=>{
     return convertTimeTo12H(`${tempTime.getHours()}.${tempTime.getMinutes().toString().padStart(2,'0')}`);
 }
 
+const formatDuration=(time)=>{
+    const tempTime=new Date(time);
+    if (tempTime.getHours()===0) return `${tempTime.getMinutes().toString().padStart(2,'0')} minute(s)`;
+    return `${tempTime.getHours()} hour(s) and ${tempTime.getMinutes().toString().padStart(2,'0')} minute(s)`;
+}
+
 const capitalize=(input)=>input.charAt(0).toUpperCase()+input.slice(1);
 
 const getChipColor=(status)=>{
@@ -97,7 +103,56 @@ const findTimeDifference=(eventTime,currentTime)=>{
         if (timeDiff<0 && (minutes>0 || hours>0)) timeDifference+=' ago'
 
         return timeDifference;
+}
+
+const updateStatus=(status,eventTime,duration)=>{
+
+        if (status==='In progress') {
+            updateStatusDuration(status,eventTime,duration);
+        } else {
+
+        let today=new Date();
+        let timeDiff=eventTime-today;
+        const minutes=Math.floor(timeDiff/(1000*60)%60);
+        const hours= Math.floor(timeDiff/(1000*60*60)%24);
+
+        if (status==='Scheduled') if (hours<=0 && minutes<=0) return 'In progress'
+        return status;
+        }
+}
+
+const getMinutesAndHoursOnly=(eventTime)=>{
+    
+        let today=new Date();
+        let timeDiff=eventTime-today;
+        const minutes=Math.floor(timeDiff/(1000*60)%60);
+        const hours= Math.floor(timeDiff/(1000*60*60)%24);
+
+        console.log('minutes : ',minutes,'hours : ',hours);
 
 }
 
-export {API_LOGIN,API_REGISTER,API_AUTH,API_EVENTS,API_CONTACTS,API_DAY_PLANNER,API_PERSONAL_DIARY,API_INFO,convertTimeTo12H,formatDate,formatTime,getChipColor,getTimeBackgroundColor,findTimeDifference,dateOnly,capitalize};
+const updateStatusDuration=(status,eventTime,duration)=>{
+
+    let today=new Date();
+    let timeDiff=eventTime-duration;
+    console.log('time diff and today',timeDiff,today);
+    let completed= false;
+    if (timeDiff<today) {
+        console.log('Completed')
+        completed=true;
+    }
+    else {
+        completed=false;
+        console.log('not completed');
+    }
+    // const minutes=Math.floor(timeDiff/(1000*60)%60);
+    // const hours= Math.floor(timeDiff/(1000*60*60)%24);
+
+    if (completed) return 'Completed'
+    return status;
+}
+
+
+
+export {API_LOGIN,API_REGISTER,API_AUTH,API_EVENTS,API_CONTACTS,API_DAY_PLANNER,API_PERSONAL_DIARY,API_INFO,convertTimeTo12H,formatDate,formatTime,getChipColor,getTimeBackgroundColor,findTimeDifference,dateOnly,capitalize,updateStatus,formatDuration,getMinutesAndHoursOnly};

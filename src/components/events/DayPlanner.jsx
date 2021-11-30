@@ -6,8 +6,9 @@ import {Stack,Typography,Button,Container,Card,IconButton,Box,LinearProgress,Chi
 import {Visibility } from '@mui/icons-material';
 import {DatePicker,LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import {API_DAY_PLANNER,formatTime,getChipColor,capitalize} from '../../Utilities'
+import {API_DAY_PLANNER,formatTime,getChipColor,capitalize,formatDuration} from '../../Utilities'
 import UpdateTime from './UpdateTime';
+import UpdateStatus from './UpdateStatus';
 
 export default function DayPlanner({props}){
 
@@ -90,6 +91,8 @@ export default function DayPlanner({props}){
                                 <Stack direction="row" spacing={2}>
                                     <Tooltip title="Status" placement="top"><Chip label={event.status} color={getChipColor(event.status)}></Chip></Tooltip>
                                     <Tooltip title="Priority" placement="top"><Chip label={event.priority} color={getChipColor(event.priority)}></Chip></Tooltip>
+                                    <Typography variant="h6">{formatDuration(event.duration)}</Typography>
+                                    <UpdateStatus time={event.dateTime} status={event.status} duration={event.duration} />
                                     <UpdateTime time={event.dateTime}/>
                                 </Stack>
                             </Stack>

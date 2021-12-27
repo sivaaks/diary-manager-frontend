@@ -1,10 +1,11 @@
 import React,{useEffect, useState} from 'react';
-import { Container,Box,Typography,TextField,Stack,Alert,Snackbar,LinearProgress } from "@mui/material"
+import { Container,Box,Typography,TextField,Stack,LinearProgress } from "@mui/material"
 import { LoadingButton } from '@mui/lab';
 import Appbar from "../Appbar";
 import {API_CONTACTS} from '../../Utilities';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function AddContact({props}){
 
@@ -16,8 +17,6 @@ export default function AddContact({props}){
     const [contactDetails,setContactDetails]=useState(contactDefaults);
     const [loading,setLoading]=useState(false);
     const [requestType,setRequestType]=useState('Add');
-    const [alert,setAlert]=useState({show:false,vertical:'top',horizontal:'right',type:'success',message:''});
-    const {show,vertical,horizontal,type,message}=alert;
 
     const handleChange=({target:{name,value}})=>setContactDetails({...contactDetails,[name]:value});
 
@@ -30,16 +29,17 @@ export default function AddContact({props}){
         }).then(function(res){
             if(res.status===200) {
                 //setAlert({...alert,show:true,message:`${eventDetails.type} added successfully`,type:'success'});
-                setAlert({...alert,show:true,message:`Contact added successfully`,type:'success'});
-                clearInputFields();
+               toast.success(`Contact added successfully`);
+               clearInputFields();
+               history.push('/contacts');
             }
         }).catch(function(err){
             console.log(err.response);
             if(err.response.status===401) {
-                setAlert({...alert,show:true,message:'Log in to continue, redirecting',type:'error'})
+                toast.error('Log in to continue, redirecting');
                 history.push('/login');
             } else{
-                setAlert({...alert,show:true,message:err.response.data.message,type:'error'})
+               toast.error(err.response.data.message);
                 setLoading(false);
             }
             
@@ -56,16 +56,16 @@ export default function AddContact({props}){
         }).then(function(res){
             if(res.status===200){
                 //setAlert({...alert,show:true,message:`${eventDetails.type} updated successfully`,type:'success'});
-                setAlert({...alert,show:true,message:`Contact updated successfully`,type:'success'});
+                toast.error(`Contact updated successfully`);
                 clearInputFields();
             }
         }).catch(function(err){
             console.log(err.response);
             if(err.response.status===401) {
-                setAlert({...alert,show:true,message:'Log in to continue, redirecting',type:'error'})
+                toast.error('Log in to continue, redirecting');
                 history.push('/login');
             } else{
-                setAlert({...alert,show:true,message:err.response.data.message,type:'error'})
+                toast.error(err.response.data.message);
             }
             
         })
@@ -73,7 +73,6 @@ export default function AddContact({props}){
     }
 
     const clearInputFields=()=>setContactDetails(contactDefaults);
-    const closeAlert=()=>setAlert({...alert,show:false});
 
     useEffect(()=>{
 
@@ -128,11 +127,6 @@ export default function AddContact({props}){
                 </Stack>
             </Stack>
         </Container>
-        <Snackbar open={show} autoHideDuration={6000} onClose={closeAlert} anchorOrigin={{vertical,horizontal}}>
-            <Alert severity={type} variant="filled" sx={{width:'100%',pr:30}}>
-                {message}
-            </Alert>
-        </Snackbar>
         </>
     )
 

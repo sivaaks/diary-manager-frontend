@@ -2,10 +2,11 @@ import React,{useEffect,useState} from 'react';
 //import { useHistory } from 'react-router';
 import axios from 'axios';
 import Appbar from '../Appbar';
-import {Stack,Button,Container,Box,LinearProgress,Snackbar,Alert,TextField,Typography} from '@mui/material';
+import {Stack,Button,Container,Box,LinearProgress,TextField,Typography} from '@mui/material';
 import {DatePicker,LocalizationProvider,LoadingButton} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {API_PERSONAL_DIARY,dateOnly} from '../../Utilities'
+import { toast } from 'react-toastify';
 
 export default function PersonalDiary({props}){
 
@@ -20,12 +21,9 @@ export default function PersonalDiary({props}){
     const [loading,setLoading]=useState(true);
     const [disabled,setDisabled]=useState(false);
     const [date,setDate]=useState(new Date());
-    const [alert,setAlert]=useState({show:false,vertical:'top',horizontal:'right',type:'success',message:''});
-    const {show,vertical,horizontal,type,message}=alert;
-    
-    const handleText=(e)=>setDiaryContent(e.target.value);
-    const closeAlert=()=>setAlert({...alert,show:false});
 
+    const handleText=(e)=>setDiaryContent(e.target.value);
+    
     const writeDiary=async()=>{
         
         setLoading(true);
@@ -35,7 +33,7 @@ export default function PersonalDiary({props}){
             },{
                 headers:{auth:authToken},
                 }).then(function(res){
-                    if(res.status===200) setAlert({...alert,show:true,type:'success',message:'Diary written successfully'});
+                    if(res.status===200) toast.success('Diary written successfully');
                 }).catch(function(err){
                    // editDiary();
                    setDate(new Date());
@@ -56,10 +54,10 @@ export default function PersonalDiary({props}){
         },{
             headers:{auth:authToken},
             }).then(function(res){
-                if(res.status===200) setAlert({...alert,show:true,type:'success',message:'Diary edited successfully'});
+                if(res.status===200) toast.success('Diary edited successfully');
             }).catch(function(err){
-                if(err.response.data.message) setAlert({...alert,show:true,message:err.response.data.message,type:'error'});
-                else setAlert({...alert,show:true,message:err.response.data,type:'error'});
+                if(err.response.data.message) toast.error(err.response.data.message);
+                else toast.error(err.response.data);
             })
             setDate(new Date());
             setLoading(false);
@@ -124,11 +122,6 @@ export default function PersonalDiary({props}){
         </Stack>
         </Box>
         </Container>
-        <Snackbar open={show} autoHideDuration={6000} onClose={closeAlert} anchorOrigin={{vertical,horizontal}}>
-            <Alert severity={type} variant="filled" sx={{width:'100%',pr:30}}>
-                {message}
-            </Alert>
-        </Snackbar>
         </>
     )
 

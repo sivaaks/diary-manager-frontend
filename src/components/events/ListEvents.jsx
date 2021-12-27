@@ -2,10 +2,12 @@ import React,{useEffect,useState} from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
 import Appbar from '../Appbar';
-import {Stack,Typography,Button,Container,Card,IconButton,Box,LinearProgress,Chip,Snackbar,Alert,Tooltip,Dialog,DialogTitle,DialogContent, DialogContentText, DialogActions} from '@mui/material';
+import {Stack,Typography,Button,Container,Card,IconButton,Box,LinearProgress,Chip,Tooltip,Dialog,DialogTitle,DialogContent, DialogContentText, DialogActions} from '@mui/material';
 import { Delete,Edit,Visibility,Today,AccessTime } from '@mui/icons-material';
 import {API_EVENTS,formatDate,formatTime,getChipColor,capitalize,formatDuration} from '../../Utilities'
 import { LoadingButton } from '@mui/lab';
+import { toast } from 'react-toastify';
+import Status from './Status';
 
 export default function Events({props}){
 
@@ -24,8 +26,6 @@ export default function Events({props}){
     const [deleted,setDeleted]=useState();
     const [deleteId,setDeleteId]=useState(null);
     const [deleteDialog,setDeleteDialog]=useState(false);
-    const [alert,setAlert]=useState({show:false,vertical:'top',horizontal:'right',type:'success',message:''});
-    const {show,vertical,horizontal,type,message}=alert;
 
     const handleDeleteButton=(id)=>{
         setDeleteDialog(true);
@@ -46,11 +46,10 @@ export default function Events({props}){
             setDeleteId(null);
             closeDeleteDialog();
             setLoading(false);
-            setAlert({...alert,show:true,message:`${eventType} deleted successfully`,type:'success'});
+            toast.success(`${capitalize(eventType)} deleted successfully`);
         }
     }
 
-    const closeAlert=()=>setAlert({...alert,show:false});
     const closeDeleteDialog=()=>setDeleteDialog(false);
 
     useEffect(()=>{
@@ -102,7 +101,7 @@ export default function Events({props}){
                                 <Stack direction="row" spacing={2}>
                                     <Typography sx={styles.typography}><Today sx={{pr:1}}/>{formatDate(event.dateTime)}</Typography>
                                     <Typography sx={styles.typography}><AccessTime sx={{pr:1}}/>{formatTime(event.dateTime)}</Typography>
-                                    <Tooltip title="Status" placement="top"><Chip label={event.status} color={getChipColor(event.status)}></Chip></Tooltip>
+                                    <Status time={event.dateTime} status={event.status} duration={event.duration} />
                                     <Tooltip title="Priority" placement="top"><Chip label={event.priority} color={getChipColor(event.priority)}></Chip></Tooltip>
                                     <Typography sx={styles.typography}>Duration: {formatDuration(event.duration)}</Typography>
                                 </Stack>
@@ -118,11 +117,6 @@ export default function Events({props}){
             }):loading?<p>{`Loading ${eventType}s`}</p>:<p>{`No ${eventType}s to display`}</p>}
         </Box>
         </Container>
-        <Snackbar open={show} autoHideDuration={6000} onClose={closeAlert} anchorOrigin={{vertical,horizontal}}>
-            <Alert severity={type} variant="filled" sx={{width:'100%',pr:30}}>
-                {message}
-            </Alert>
-        </Snackbar>
         <Dialog
             open={deleteDialog}
             onClose={closeDeleteDialog}

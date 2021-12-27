@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { LinearProgress,Box,Container,Card,Typography,Stack,Chip } from '@mui/material';
 import { Today,AccessTime } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import { toast } from 'react-toastify';
 //import { Delete,Edit,Visibility,Today,AccessTime } from '@mui/icons-material';
 
 export default function ViewEvent({props}){
@@ -28,11 +29,18 @@ export default function ViewEvent({props}){
     // }
 
     const cancelEvent=async()=>{
+        console.log('cancelled called',authToken);
         setLoading(true);
-        await axios.patch(`${API_EVENTS}/status?id=${eventDetails._id}&status='Cancelled`,{
-            headers:{auth:authToken}
+        await axios.put(`${API_EVENTS}/cancel/${eventDetails._id}`,{},{
+            headers:{auth:authToken},
         }).then(function(res){
             console.log(res);
+            if(res.status===200) {
+            toast.success(`Canceled successfully`);
+            }
+        }).catch(function(err){
+            console.log(err);
+            toast.error(`Cancel failed`);
         })
         setLoading(false);
     }
@@ -84,7 +92,7 @@ export default function ViewEvent({props}){
                         <Typography variant="h5" sx={styles.typography}>Duration: {formatDuration(eventDetails.duration)}</Typography>
                         <Typography variant="p" sx={styles.typography}>Created at: {eventDetails.createdAt}</Typography>
                     </Stack>
-                    <LoadingButton variant="contained" loading={loading} onClick={()=>cancelEvent}>Cancel</LoadingButton>
+                    <LoadingButton variant="contained" color="error" loading={loading} onClick={cancelEvent}>Cancel</LoadingButton>
                 </Card>
             </Box>
         </Container>

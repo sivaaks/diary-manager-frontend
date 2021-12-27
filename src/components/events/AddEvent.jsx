@@ -1,11 +1,12 @@
 import React,{useEffect, useState} from 'react';
-import { Container,Box,Typography,TextField,Stack,FormControl,MenuItem,InputLabel,Select,Alert,Snackbar,LinearProgress } from "@mui/material"
+import { Container,Box,Typography,TextField,Stack,FormControl,MenuItem,InputLabel,Select,LinearProgress } from "@mui/material"
 import { TimePicker,DateTimePicker,LocalizationProvider,LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import Appbar from "../Appbar";
 import {API_EVENTS,API_CONTACTS,capitalize} from '../../Utilities';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function AddEvent({props}){
 
@@ -22,8 +23,8 @@ export default function AddEvent({props}){
     const [loading,setLoading]=useState(true);
     const [requestType,setRequestType]=useState('Add');
     const [eventType,setEventType]=useState(EVENT);
-    const [alert,setAlert]=useState({show:false,vertical:'top',horizontal:'right',type:'success',message:''});
-    const {show,vertical,horizontal,type,message}=alert;
+   // const [alert,setAlert]=useState({show:false,vertical:'top',horizontal:'right',type:'success',message:''});
+    //const {show,vertical,horizontal,type,message}=alert;
 
     const handleChange=({target:{name,value}})=>setEventDetails({...eventDetails,[name]:value});
 
@@ -59,16 +60,20 @@ export default function AddEvent({props}){
         }).then(function(res){
             if(res.status===200) {
                 //setAlert({...alert,show:true,message:`${eventDetails.type} added successfully`,type:'success'});
-                setAlert({...alert,show:true,message:`${capitalize(eventType)} added successfully`,type:'success'});
+                //setAlert({...alert,show:true,message:`${capitalize(eventType)} added successfully`,type:'success'});
+                toast.success(`${capitalize(eventType)} added successfully`);
+                history.push(`/${eventType}s`);
                 clearInputFields();
             }
         }).catch(function(err){
             console.log(err.response);
             if(err.response.status===401) {
-                setAlert({...alert,show:true,message:'Log in to continue, redirecting',type:'error'})
+                toast.error('Log in to continue, redirecting');
+                //setAlert({...alert,show:true,message:'Log in to continue, redirecting',type:'error'})
                 history.push('/login');
             } else{
-                setAlert({...alert,show:true,message:err.response.data.message,type:'error'})
+                toast.error(err.response.data.message);
+                //setAlert({...alert,show:true,message:err.response.data.message,type:'error'})
                 setLoading(false);
             }
             
@@ -85,16 +90,20 @@ export default function AddEvent({props}){
         }).then(function(res){
             if(res.status===200){
                 //setAlert({...alert,show:true,message:`${eventDetails.type} updated successfully`,type:'success'});
-                setAlert({...alert,show:true,message:`${capitalize(eventType)} updated successfully`,type:'success'});
+                //setAlert({...alert,show:true,message:`${capitalize(eventType)} updated successfully`,type:'success'});
+                toast.success(`${capitalize(eventType)} updated successfully`);
+                history.push(`/${eventType}s`);
                 clearInputFields();
             }
         }).catch(function(err){
             console.log(err.response);
             if(err.response.status===401) {
-                setAlert({...alert,show:true,message:'Log in to continue, redirecting',type:'error'})
+                toast.error('Log in to continue, redirecting');
+                //setAlert({...alert,show:true,message:'Log in to continue, redirecting',type:'error'})
                 history.push('/login');
             } else{
-                setAlert({...alert,show:true,message:err.response.data.message,type:'error'})
+                toast.error(err.response.data.message);
+                //setAlert({...alert,show:true,message:err.response.data.message,type:'error'})
             }
             
         })
@@ -135,7 +144,7 @@ export default function AddEvent({props}){
         setEventDetails({...eventDetails,name:'',description:'',dateTime:new Date(),priority:'',contact:'',notes:''})
     }
 
-    const closeAlert=()=>setAlert({...alert,show:false});
+    //const closeAlert=()=>setAlert({...alert,show:false});
 
     useEffect(()=>{
         async function getContacts(){
@@ -318,11 +327,11 @@ export default function AddEvent({props}){
                 </Stack>
             </Stack>
         </Container>
-        <Snackbar open={show} autoHideDuration={6000} onClose={closeAlert} anchorOrigin={{vertical,horizontal}}>
+        {/* <Snackbar open={show} autoHideDuration={6000} onClose={closeAlert} anchorOrigin={{vertical,horizontal}}>
             <Alert severity={type} variant="filled" sx={{width:'100%',pr:30}}>
                 {message}
             </Alert>
-        </Snackbar>
+        </Snackbar> */}
         </>
     )
 

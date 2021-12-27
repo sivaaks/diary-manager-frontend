@@ -5,6 +5,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import {API_LOGIN} from '../../Utilities';
 import axios from 'axios';
 import { ArrowForward } from '@mui/icons-material';
+import {toast} from 'react-toastify';
 
 export default function Login(){
 
@@ -22,18 +23,18 @@ export default function Login(){
            ...userCredentials,
         }).then(function(res){
             if(res.data) if(res.status===200) {
-                setAlert({...alert,show:true,type:'success',message:'Login successfull,redirecting...'})
                 localStorage.setItem('auth-token',res.data.authToken);
                 setLoading(false);
+                toast.success('Login successfull');
                 history.push('/dashboard');
             }
         }).catch(function(err){
                 setLoading(false);
                 console.log(err.response);
                 if(err.response.data.message) {
-                    setAlert({...alert,show:true,type:'error',message:err.response.data.message});
+                    toast.error(err.response.data.message);
                 }
-                else setAlert({...alert,show:true,type:'error',message:err.response.data})
+                else toast.error(err.response.data);
         })
 
     }

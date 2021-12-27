@@ -2,9 +2,10 @@ import React,{useEffect,useState} from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
 import Appbar from '../Appbar';
-import {Stack,Typography,Button,Container,Card,IconButton,Box,LinearProgress,Snackbar,Alert} from '@mui/material';
+import {Stack,Typography,Button,Container,Card,IconButton,Box,LinearProgress} from '@mui/material';
 import { Delete,Edit,Today,AccessTime } from '@mui/icons-material';
-import {API_CONTACTS} from '../../Utilities'
+import {API_CONTACTS} from '../../Utilities';
+import { toast } from 'react-toastify';
 
 export default function Contacts(){
 
@@ -16,23 +17,23 @@ export default function Contacts(){
     const [contacts,setContacts]=useState([]);
     const [loading,setLoading]=useState(true);
     const [deleted,setDeleted]=useState(false);
-    const [alert,setAlert]=useState({show:false,vertical:'top',horizontal:'right',type:'success',message:''});
-    const {show,vertical,horizontal,type,message}=alert;
 
-    const deleteEvent=async(id)=>{
+    const deleteContact=async(id)=>{
         setLoading(true);
         await axios.delete(`${API_CONTACTS}/${id}`,{
             headers:{auth:authToken}
         }).then(function(res){
             console.log(res);
-            if(res.status===200) setDeleted(id);
+            if(res.status===200) {
+                toast.success('Contact deleted successfully');
+                setDeleted(id);
+            }
         }).catch(function(err){
             console.log(err);
+            toast.error('Contact delete failed');
         })
         setLoading(false);
     }
-
-    const closeAlert=()=>setAlert({...alert,show:false});
 
     useEffect(()=>{
         
@@ -78,7 +79,7 @@ export default function Contacts(){
                             </Stack>
                             <Stack direction="row" sx={{height:'auto'}}>
                                 <IconButton onClick={()=>history.push(`/contacts/edit/${contact._id}`)} color="secondary" size="large"><Edit fontSize="large"/></IconButton>
-                                <IconButton onClick={()=>deleteEvent(contact._id)} color="error" size="large"><Delete fontSize="large"/></IconButton>
+                                <IconButton onClick={()=>deleteContact(contact._id)} color="error" size="large"><Delete fontSize="large"/></IconButton>
                             </Stack>
                         </Card>
                     </Box>
@@ -86,11 +87,6 @@ export default function Contacts(){
             }):loading?<p>{`Loading contacts`}</p>:<p>{`No contacts to display`}</p>}
         </Box>
         </Container>
-        <Snackbar open={show} autoHideDuration={6000} onClose={closeAlert} anchorOrigin={{vertical,horizontal}}>
-            <Alert severity={type} variant="filled" sx={{width:'100%',pr:30}}>
-                {message}
-            </Alert>
-        </Snackbar>
         </>
     )
 

@@ -7,8 +7,8 @@ import {Visibility } from '@mui/icons-material';
 import {DatePicker,LocalizationProvider} from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {API_DAY_PLANNER,formatTime,getChipColor,capitalize,formatDuration} from '../../Utilities'
-import UpdateTime from './UpdateTime';
-import UpdateStatus from './UpdateStatus';
+import Time from './Time';
+import Status from './Status';
 
 export default function DayPlanner({props}){
 
@@ -30,7 +30,9 @@ export default function DayPlanner({props}){
 
         async function getEvents(){
             setLoading(true);
-            await axios.get(`${API_DAY_PLANNER}?date=${date}`,{
+            var dateRequest = new Date(date).toDateString();
+            console.log(`date request : ${dateRequest}`);
+            await axios.get(`${API_DAY_PLANNER}?date=${dateRequest}`,{
                 headers:{auth:authToken},
             }).then(function(res){
                 console.log(res.data);
@@ -89,11 +91,10 @@ export default function DayPlanner({props}){
                             <Stack direction="column" spacing={1} sx={{ml:1}}>
                                 <Typography variant="h4" sx={{fontSize:'32px',fontWeight:'semi-bold'}}>{event.name}</Typography>
                                 <Stack direction="row" spacing={2}>
-                                    <Tooltip title="Status" placement="top"><Chip label={event.status} color={getChipColor(event.status)}></Chip></Tooltip>
+                                <Status time={event.dateTime} status={event.status} duration={event.duration} />
                                     <Tooltip title="Priority" placement="top"><Chip label={event.priority} color={getChipColor(event.priority)}></Chip></Tooltip>
                                     <Typography variant="h6">{formatDuration(event.duration)}</Typography>
-                                    <UpdateStatus time={event.dateTime} status={event.status} duration={event.duration} />
-                                    <UpdateTime time={event.dateTime}/>
+                                    <Time time={event.dateTime}/>
                                 </Stack>
                             </Stack>
                             <Stack direction="row" sx={{height:'auto',marginLeft:'auto',marginRight:'10px'}}>

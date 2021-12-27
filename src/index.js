@@ -1,4 +1,12 @@
 import ReactDOM from 'react-dom';
 import App from './App';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
-ReactDOM.render(<App/>,document.querySelector('#root'));
+
+ReactDOM.render(
+<>
+<ToastContainer/>
+<App/>
+</>,
+document.querySelector('#root'));

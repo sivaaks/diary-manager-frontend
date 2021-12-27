@@ -1,15 +1,17 @@
 
 // const API_LOGIN='http://localhost:3001/users/login';
 // const API_REGISTER='http://localhost:3001/users/register';
+// const API_FORGOT_PASSWORD='http://localhost:3001/users/forgot-password';
 // const API_AUTH='http://localhost:3001/users/check-auth';
 // const API_EVENTS='http://localhost:3001/events';
 // const API_CONTACTS='http://localhost:3001/contacts';
 // const API_DAY_PLANNER='http://localhost:3001/day-planner';
-//const API_PERSONAL_DIARY='http://localhost:3001/personal-diary';
-//const API_INFO='http://localhost:3001/info';
+// const API_PERSONAL_DIARY='http://localhost:3001/personal-diary';
+// const API_INFO='http://localhost:3001/info';
 
 const API_LOGIN='https://diary-manager-backend.herokuapp.com/users/login';
 const API_REGISTER='https://diary-manager-backend.herokuapp.com/users/register';
+const API_FORGOT_PASSWORD='https://diary-manager-backend.herokuapp.com/users/forgot-password';
 const API_AUTH='https://diary-manager-backend.herokuapp.com/users/check-auth';
 const API_EVENTS='https://diary-manager-backend.herokuapp.com/events';
 const API_CONTACTS='https://diary-manager-backend.herokuapp.com/contacts';
@@ -40,6 +42,14 @@ const parseTime=(time)=>{
     return tempTime;
 }
 
+const convertTimeToInt=(time)=>{
+    const timeObj=new Date(time);
+    let tempTime= [];
+    tempTime.push(timeObj.getHours());
+    tempTime.push(timeObj.getMinutes());
+    return tempTime;
+}
+
 const formatDate=(date)=>{
     const tempDate=new Date(date);
     const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -48,7 +58,7 @@ const formatDate=(date)=>{
 
 const dateOnly=(date)=>{
     const getDateOnly= new Date(date);
-    return `${getDateOnly.getDate()}-${getDateOnly.getMonth()+1}-${getDateOnly.getFullYear()}`;
+    return `${getDateOnly.getFullYear()}-${(getDateOnly.getMonth()+1).toString().padStart(2,'0')}-${(getDateOnly.getDate()).toString().padStart(2,'0')}`;
 }
 
 const formatTime=(time)=>{
@@ -58,8 +68,8 @@ const formatTime=(time)=>{
 
 const formatDuration=(time)=>{
     const tempTime=new Date(time);
-    if (tempTime.getHours()===0) return `${tempTime.getMinutes().toString().padStart(2,'0')} minute(s)`;
-    return `${tempTime.getHours()} hour(s) and ${tempTime.getMinutes().toString().padStart(2,'0')} minute(s)`;
+    if (tempTime.getHours()===0) return `${tempTime.getMinutes().toString().padStart(2,'0')}m`;
+    return `${tempTime.getHours()}h ${tempTime.getMinutes().toString().padStart(2,'0')}m`;
 }
 
 const capitalize=(input)=>input.charAt(0).toUpperCase()+input.slice(1);
@@ -94,11 +104,11 @@ const findTimeDifference=(eventTime,currentTime)=>{
         let timeDifference=``;
         if (timeDiff>0) timeDifference=`Starts in `
         else timeDifference=`Started `;
-        if (hours>1) timeDifference+=`${hours} hours `;
-        else if (hours===1) timeDifference+=`${hours} hour `;
-        if (minutes===1) timeDifference+=`${minutes} minute `
+        if (hours>1) timeDifference+=`${hours}h`;
+        else if (hours===1) timeDifference+=`${hours}h`;
+        if (minutes===1) timeDifference+=`${minutes}m`
         else if(minutes===0 && hours<0) timeDifference+=`Just now` 
-        else timeDifference+=`${minutes} minutes`;
+        else timeDifference+=`${minutes}m`;
 
         if (timeDiff<0 && (minutes>0 || hours>0)) timeDifference+=' ago'
 
@@ -155,4 +165,4 @@ const updateStatusDuration=(status,eventTime,duration)=>{
 
 
 
-export {API_LOGIN,API_REGISTER,API_AUTH,API_EVENTS,API_CONTACTS,API_DAY_PLANNER,API_PERSONAL_DIARY,API_INFO,convertTimeTo12H,formatDate,formatTime,getChipColor,getTimeBackgroundColor,findTimeDifference,dateOnly,capitalize,updateStatus,formatDuration,getMinutesAndHoursOnly};
+export {API_LOGIN,API_REGISTER,API_AUTH,API_EVENTS,API_CONTACTS,API_DAY_PLANNER,API_PERSONAL_DIARY,API_INFO,API_FORGOT_PASSWORD,convertTimeTo12H,formatDate,formatTime,getChipColor,getTimeBackgroundColor,findTimeDifference,dateOnly,capitalize,updateStatus,formatDuration,getMinutesAndHoursOnly,convertTimeToInt};

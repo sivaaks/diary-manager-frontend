@@ -3,7 +3,7 @@ import axios from 'axios';
 import Calendar from 'react-awesome-calendar';
 import Appbar from '../Appbar';
 import { Container,Box,Typography,LinearProgress } from '@mui/material';
-import { API_EVENTS } from '../../Utilities';
+import { API_EVENTS,dateOnly } from '../../Utilities';
 
 export default function CalendarView(){
     
@@ -20,8 +20,9 @@ export default function CalendarView(){
             }).then(function(res){
                 let eventsFormatTemp=[];
                 res.data.map((event)=>{
-                    var s = new Date(event.dateTime).toTimeString();
-                   return eventsFormatTemp.push({id:event._id,from:`2021-11-30T${s.substring(0,8)}.012Z`,to:`2021-11-30T${s.substring(0,8)}.000Z`,color:'green',title:event.name});
+                    var time = new Date(event.dateTime).toTimeString();
+                    console.log(`Time:${time},Date:${dateOnly(event.dateTime)}`);
+                   return eventsFormatTemp.push({id:event._id,from:`${dateOnly(event.dateTime)}T${time.substring(0,8)}.000Z`,to:`${dateOnly(event.dateTime)}T${time.substring(0,8)}.000Z`,color:'green',title:event.name});
                 })
                 setEventFormat(eventsFormatTemp);
             }).catch(function(err){
